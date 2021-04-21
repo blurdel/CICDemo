@@ -18,6 +18,7 @@ pipeline {
 	stages {
 		stage ('Init') {
 			steps {
+				echo 'Initing ...'
 				sh 'java -version'
 				sh 'mvn --version'
 				script {
@@ -41,7 +42,6 @@ pipeline {
 			}
 		}
 		stage ('Test') {
-			echo 'Testing ...'
 			when {
 				expression {
 					//BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
@@ -49,7 +49,7 @@ pipeline {
 				}
 			}
 			steps {
-				
+				echo 'Testing ...'
 				// 'make check' returns non-zero on test failures,
 				// using 'true' to allow the pipeline to continue nonetheless
 				sh 'make check || true'
@@ -57,9 +57,8 @@ pipeline {
 			}
 		}
 		stage ('Deploy') {
-			echo 'Deploying ...'
 			steps {
-				
+				echo 'Deploying ...'
 				when {
 					expression {
 						currentBuild.result == null || currentBuild.result == 'SUCCESS'
@@ -75,8 +74,8 @@ pipeline {
 			}
 		}
 		stage ('Cleanup') {
-			echo 'Cleaning up ...'
 			steps {
+				echo 'Cleaning up ...'
 				script {
 					gv.otherFunc()
 				}

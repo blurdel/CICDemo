@@ -62,7 +62,7 @@ pipeline {
 				// 'make check' returns non-zero on test failures,
 				// using 'true' to allow the pipeline to continue nonetheless
 				bat 'mvn test || true'
-				junit '**/target/*.xml'
+				junit(allowEmptyResults: true, testResults: '**/target/*.xml')
 			}
 		}
 		stage ('Deploy') {

@@ -26,8 +26,8 @@ pipeline {
 		stage ('Init') {
 			steps {
 				echo 'Initing ...'
-				sh 'java -version'
-				sh 'mvn --version'
+				bat 'java -version'
+				bat 'mvn --version'
 				script {
 					gv = load "myscript.groovy"
 					gv.someFunc()

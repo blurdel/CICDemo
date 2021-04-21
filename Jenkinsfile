@@ -14,10 +14,7 @@ pipeline {
 		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choices to make')
 		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
 	}
-	tools {
-		maven 'Maven'
-		//jdk
-	}
+	
 	stages {
 		stage ('Init') {
 			steps {
@@ -40,10 +37,11 @@ pipeline {
 				echo "Building version ${NEW_VERSION}"
 				//sh 'make'
 				sh 'mvn clean verify'
-				archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
+				//archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
 			}
 		}
 		stage ('Test') {
+			echo 'Testing ...'
 			when {
 				expression {
 					//BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
@@ -51,7 +49,7 @@ pipeline {
 				}
 			}
 			steps {
-				echo 'Testing ...'
+				
 				// 'make check' returns non-zero on test failures,
 				// using 'true' to allow the pipeline to continue nonetheless
 				sh 'make check || true'
@@ -59,8 +57,9 @@ pipeline {
 			}
 		}
 		stage ('Deploy') {
+			echo 'Deploying ...'
 			steps {
-				echo 'Deploying ...'
+				
 				when {
 					expression {
 						currentBuild.result == null || currentBuild.result == 'SUCCESS'

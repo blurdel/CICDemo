@@ -2,6 +2,7 @@ def gv
 
 pipeline {
 	agent any
+
 	environment {
 		// env vars
 		NEW_VERSION = "1.2.0"
@@ -14,7 +15,11 @@ pipeline {
 		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choices to make')
 		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
 	}
-	
+	tools {
+		//maven 'Maven'
+		//jdk
+	}
+
 	stages {
 		stage ('Init') {
 			steps {
@@ -30,15 +35,16 @@ pipeline {
 		stage ('Build') {
 			when {
 				expression {
-					BRANCH_NAME == 'dev' // && CODE_CHANGES == true
+					BRANCH_NAME == 'master' // && CODE_CHANGES == true
 				}
 			}
 			steps {
 				echo 'Building ...'
 				echo "Building version ${NEW_VERSION}"
 				//sh 'make'
+				//sh 'npm install'
 				sh 'mvn clean verify'
-				//archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
+				archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
 			}
 		}
 		stage ('Test') {
@@ -59,6 +65,7 @@ pipeline {
 		stage ('Deploy') {
 			steps {
 				echo 'Deploying ...'
+				/*
 				when {
 					expression {
 						currentBuild.result == null || currentBuild.result == 'SUCCESS'
@@ -71,11 +78,12 @@ pipeline {
 					sh "myscript ${USER} ${PWD}"
 					echo "deploying version ${params.VERSION}"
 				}
+				*/
 			}
 		}
 		stage ('Cleanup') {
+			echo 'Cleaning up ...'
 			steps {
-				echo 'Cleaning up ...'
 				script {
 					gv.otherFunc()
 				}
@@ -84,13 +92,13 @@ pipeline {
 	}
 	post {
 		always {
-			echo 'ALWAYS'
+			echo 'echo ALWAYS'
 		}
 		success {
-			echo 'SUCCESS'
+			echo 'echo SUCCESS'
 		}
 		failure {
-			echo 'FAILURE'
+			echo 'echo FAILURE'
 		}
 	}
 }

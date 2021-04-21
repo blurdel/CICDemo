@@ -6,13 +6,13 @@ pipeline {
 	environment {
 		// env vars
 		NEW_VERSION = "1.2.0"
-		SERVER_CREDS = credentials('dso-creds')
+		//SERVER_CREDS = credentials('dso-creds')
 	}
 	parameters {
 		// These will show up in Jenkins: Build with parameters
 		// These are also available in groovy scripts
 		string(name: 'VERSION', defaultValue: '1.0.0', description: 'version to deploy to prod')
-		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choices to make')
+		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choice you might want to make')
 		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
 	}
 	/*

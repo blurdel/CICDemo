@@ -94,8 +94,9 @@ pipeline {
 		}
 	}
 	post {
+		// Execute after all stages executed
 		always {
-			echo 'echo Pipeline Build Status ...'
+			echo 'Pipeline Build Status ...'
 		}
 		success {
 			echo 'echo SUCCESS'

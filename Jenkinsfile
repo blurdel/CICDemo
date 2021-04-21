@@ -15,11 +15,13 @@ pipeline {
 		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choices to make')
 		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
 	}
+	/*
 	tools {
-		//maven 'Maven'
+		maven 'Maven'
 		//jdk
 	}
-
+	*/
+	
 	stages {
 		stage ('Init') {
 			steps {
@@ -82,8 +84,8 @@ pipeline {
 			}
 		}
 		stage ('Cleanup') {
-			echo 'Cleaning up ...'
 			steps {
+				echo 'Cleaning up ...'
 				script {
 					gv.otherFunc()
 				}

@@ -45,7 +45,7 @@ pipeline {
 				echo "Building version ${NEW_VERSION}"
 				//sh 'make'
 				//sh 'npm install'
-				sh 'mvn clean verify'
+				bat 'mvn clean verify'
 				archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
 			}
 		}
@@ -60,7 +60,7 @@ pipeline {
 				echo 'Testing ...'
 				// 'make check' returns non-zero on test failures,
 				// using 'true' to allow the pipeline to continue nonetheless
-				sh 'make check || true'
+				bat 'make check || true'
 				junit '**/target/*.xml'
 			}
 		}

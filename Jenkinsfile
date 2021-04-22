@@ -26,8 +26,8 @@ pipeline {
 		stage ('Init') {
 			steps {
 				echo 'Initing ...'
-				bat 'java -version'
-				bat 'mvn --version'
+				sh 'java -version'
+				sh 'mvn --version'
 				script {
 					gv = load "myscript.groovy"
 					gv.someFunc()
@@ -45,8 +45,7 @@ pipeline {
 				echo "Building version ${NEW_VERSION}"
 				//sh 'make'
 				//sh 'npm install'
-				//bat 'mvn clean verify'
-				bat 'mvn clean package'
+				sh 'mvn clean verify'
 				archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
 			}
 		}
@@ -61,7 +60,7 @@ pipeline {
 				echo 'Testing ...'
 				// 'make check' returns non-zero on test failures,
 				// using 'true' to allow the pipeline to continue nonetheless
-				bat 'mvn test || true'
+				sh 'mvn test || true'
 				junit(allowEmptyResults: true, testResults: '**/target/*.xml')
 			}
 		}
@@ -99,10 +98,10 @@ pipeline {
 			echo 'Pipeline Build Status ...'
 		}
 		success {
-			echo 'echo SUCCESS'
+			echo 'SUCCESS'
 		}
 		failure {
-			echo 'echo FAILURE'
+			echo 'FAILURE'
 		}
 	}
 }

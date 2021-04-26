@@ -7,7 +7,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 class CicDemoApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void good() {
+		int count = 3;
+		assert count == 3;
+	}
+	
+	@Test
+	void bad() {
+		int count = 3;
+		assert count == 0;
+	}
+	
+	@Test
+	void other() {
 		int count = 3;
 		assert count == 3;
 	}

@@ -8,6 +8,8 @@ class CicDemoApplicationTests {
 
 	@Test
 	void contextLoads() {
+		int count = 3;
+		assert count == 3;
 	}
 
 }

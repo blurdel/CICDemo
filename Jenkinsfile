@@ -5,6 +5,7 @@ pipeline {
 
 	environment {
 		// env vars
+		REPO = "https://github.com/blurdel/CICDemo.git"
 		NEW_VERSION = "1.2.0"
 		//SERVER_CREDS = credentials('dso-creds')
 	}
@@ -15,12 +16,12 @@ pipeline {
 		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choice you might want to make')
 		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
 	}
-	
+/*	
 	tools {
 		maven 'maven'
 		//jdk
 	}
-	
+*/	
 	
 	stages {
 		stage ('Init') {
@@ -32,6 +33,12 @@ pipeline {
 					gv = load "myscript.groovy"
 					gv.someFunc()
 				}
+			}
+		}
+		stage ('Checkout Code') {
+			steps {
+				echo "N/A Checking out ${REPO}"
+				//git "${REPO}"
 			}
 		}
 		stage ('Build') {

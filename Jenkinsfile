@@ -16,12 +16,12 @@ pipeline {
 		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choice you might want to make')
 		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
 	}
-/*	
+	
 	tools {
 		maven 'maven'
 		//jdk
 	}
-*/	
+	
 	
 	stages {
 		stage ('Init') {

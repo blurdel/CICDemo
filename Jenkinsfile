@@ -96,6 +96,7 @@ pipeline {
 				script {
 					gv.otherFunc()
 				}
+				deleteDir()
 			}
 		}
 	}
@@ -109,6 +110,11 @@ pipeline {
 		}
 		failure {
 			echo 'FAILURE'
+			script {
+				if (env.BRANCH_NAME == 'master') {
+					mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br>URL: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: 'Jenkins', mimeType: 'text/html', replyTo: '', subject: "Build Failure: Project ${env.JOB_NAME}", to: "blurdel@gmail.com";
+				}
+			}
 		}
 	}
 }

@@ -104,9 +104,7 @@ pipeline {
 		// Execute after all stages executed
 		always {
 			echo 'Pipeline Build Status ...'
-			always {
-				emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
-			}
+			emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
 		}
 		success {
 			echo 'SUCCESS'

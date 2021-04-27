@@ -52,7 +52,7 @@ pipeline {
 				echo "Building version ${NEW_VERSION}"
 				//sh 'make'
 				//sh 'npm install'
-				sh 'mvn clean verify'
+				sh 'mvn clean verify -DskipTests'
 				archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
 			}
 		}

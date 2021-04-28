@@ -9,7 +9,6 @@ pipeline {
 	agent {
 		docker {
 			image "maven:3.6.0-jdk-11"
-			label "docker"
 			// TODO: Need to manually create /tmp/maven (Docker will do it as root, BAD!)
 			args "-v /tmp/maven:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2"
 		}

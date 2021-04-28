@@ -3,16 +3,15 @@ def gv
 pipeline {
 	environment {
 		NEW_VERSION = "1.2.0"
-		JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
+		JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
 		//SERVER_CREDS = credentials('dso-creds')
 	}
 	agent {
-		// TODO: When using dockerfile, you need to install Jenkins plugin
-		dockerfile {
-			label "master"
-			filename "Dockerfile-jenkins"
+		docker {
+			image "maven:3.6.0-jdk-11"
+			label "docker"
 			// TODO: Need to manually create /tmp/maven (Docker will do it as root, BAD!)
-			args "-v /tmp/maven:/home/jenkins/.m2 -e MAVEN_CONFIG=/home/jenkins/.m2"
+			args "-v /tmp/maven:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2"
 		}
 	}
 

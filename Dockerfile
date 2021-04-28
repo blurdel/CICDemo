@@ -1,28 +1,28 @@
 # Creates Docker Image for <???>
 
-#FROM nimmis/java-centos:openjdk-11-jdk
+ARG targetName=CICDemo
+ARG binaryName=CICDemo-0.0.1-SNAPSHOT.jar
+
+
 FROM centos:7
 
 RUN yum install -y java-11
 
-RUN mkdir -p /opt/MyService           && \
-    mkdir -p /opt/MyService/config    && \
-    mkdir -p /opt/MyService/log
+RUN mkdir -p /opt/${targetName}           && \
+    mkdir -p /opt/${targetName}/config    && \
+    mkdir -p /opt/${targetName}/log
 
-COPY ./target/CICDemo-0.0.1-SNAPSHOT.jar /opt/MyService
-#COPY .src/main/resources/config /opt/MyService/config
-#COPY .src/main/resources/config /opt/MyService/config
+COPY ./target/${binaryName} /opt/${targetName}
+COPY entrypoint.sh /opt/${targetName}
+# COPY .src/main/resources/config /opt/${targetName}/config
 
-COPY entrypoint.sh /opt/MyService
-
-RUN chmod +x /opt/MyService/entrypoint.sh
+RUN chmod +x /opt/${targetName}/entrypoint.sh
 
 RUN useradd service_user
-RUN chown service_user /opt/MyService
+RUN chown service_user /opt/${targetName}
 
-# USER docker
 USER service_user
+
 EXPOSE 8080
 
-ENTRYPOINT ["/opt/MyService/entrypoint.sh"]
-
+ENTRYPOINT ["/opt/${targetName}/entrypoint.sh"]

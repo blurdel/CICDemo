@@ -104,6 +104,7 @@ pipeline {
 	post {
 		// Execute after all stages executed
 		always {
+			echo 'ALWAYS'
 			//mail to: "user@gmail.com", subject: "Jenkins Test build", body: "Test Build of Jenkins job: ${env.JOB_NAME}"
 		}
 		success {

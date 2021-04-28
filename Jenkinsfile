@@ -47,6 +47,9 @@ pipeline {
 					BRANCH_NAME == 'master' // && CODE_CHANGES == true
 				}
 			}
+			options {
+				timeout(time: 2, unit: "MINUTES")
+			}
 			steps {
 				echo 'Building ...'
 				echo "Building version ${NEW_VERSION}"
@@ -62,6 +65,9 @@ pipeline {
 					//BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
 					params.runTests == true
 				}
+			}
+			options {
+				timeout(time: 5, unit: "MINUTES")
 			}
 			steps {
 				echo 'Testing ...'

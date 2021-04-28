@@ -2,7 +2,8 @@
 
 ### Jenkins
 #docker run --name local_jenkins -d -p 8443:8080 -p 50000:50000 --mount source=jenkins-log,target=/var/log/jenkins --mount source=jenkins-data,target=/var/jenkins_home  myjenkins
-docker run --user service_user --name local_jenkins -d -p 8443:8080 -p 50000:50000 -v /opt/docker/jenkins/jenkins_home:/var/jenkins_home  jenkins/jenkins:lts
+#docker run --user service_user --name local_jenkins -d -p 8443:8080 -p 50000:50000 -v /opt/docker/jenkins/jenkins_home:/var/jenkins_home  jenkins/jenkins:lts
+docker run --name local_jenkins -d -p 8443:8080 -p 50000:50000 -v /opt/docker/jenkins/jenkins_home:/var/jenkins_home  jenkins/jenkins:lts
 
 
 ### The Service App

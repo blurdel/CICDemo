@@ -7,8 +7,10 @@ pipeline {
 		//SERVER_CREDS = credentials('dso-creds')
 	}
 	agent {
+		// TODO: When using dockerfile, you need to install Jenkins plugin
 		dockerfile {
-			label "docker"
+			label "master"
+			filename "Dockerfile-jenkins"
 			// TODO: Need to manually create /tmp/maven (Docker will do it as root, BAD!)
 			args "-v /tmp/maven:/home/jenkins/.m2 -e MAVEN_CONFIG=/home/jenkins/.m2"
 		}

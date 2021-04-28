@@ -1,11 +1,28 @@
-# Run a jenkins instance in a Docker container
-# Run: docker build -t local_jenkins .
+# Creates Docker Image for <???>
 
-FROM jenkins/jenkins:lts
+#FROM nimmis/java-centos:openjdk-11-jdk
+FROM centos:7
 
-USER root
+RUN yum install -y java-11
 
-RUN apt-get -y update && apt-get -y upgrade
+RUN mkdir -p /opt/MyService           && \
+    mkdir -p /opt/MyService/config    && \
+    mkdir -p /opt/MyService/log
 
-USER jenkins
+COPY ./target/CICDemo-0.0.1-SNAPSHOT.jar /opt/MyService
+#COPY .src/main/resources/config /opt/MyService/config
+#COPY .src/main/resources/config /opt/MyService/config
+
+COPY entrypoint.sh /opt/MyService
+
+RUN chmod +x /opt/MyService/entrypoint.sh
+
+RUN useradd service_user
+RUN chown service_user /opt/MyService
+
+# USER docker
+USER service_user
+EXPOSE 8080
+
+ENTRYPOINT ["/opt/MyService/entrypoint.sh"]
 

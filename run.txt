@@ -1,0 +1,12 @@
+
+
+### Jenkins
+#docker run --name local_jenkins -d -p 8443:8080 -p 50000:50000 --mount source=jenkins-log,target=/var/log/jenkins --mount source=jenkins-data,target=/var/jenkins_home  myjenkins
+docker run --user service_user --name local_jenkins -d -p 8443:8080 -p 50000:50000 -v /opt/docker/jenkins/jenkins_home:/var/jenkins_home  jenkins/jenkins:lts
+
+
+### The Service App
+docker build -t cicd-demo .
+
+# docker run -p 8080:8080 --user service_user --name cicd-service <local_reg>/<img_name>:<tag> /opt/MyService/entry.sh
+docker run --name cicd-service --user service_user -p 8080:8080  cicd-demo  /opt/MyService/entry.sh

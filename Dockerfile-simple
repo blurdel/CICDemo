@@ -1,0 +1,6 @@
+# docker build -t local-centos:7.0  .  -f Dockerfile-simple
+# docker run -it  local-centos:7.0
+
+FROM centos:7
+RUN yum install -y java-11
+CMD ["/bin/bash"]

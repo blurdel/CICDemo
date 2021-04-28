@@ -1,14 +1,19 @@
 def gv
 
 pipeline {
-	agent any
-
 	environment {
-		// env vars
-		REPO = "https://github.com/blurdel/CICDemo.git"
 		NEW_VERSION = "1.2.0"
+		JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
 		//SERVER_CREDS = credentials('dso-creds')
 	}
+	agent {
+		dockerfile {
+			label "docker"
+			// TODO: Need to manually create /tmp/maven (Docker will do it as root, BAD!)
+			args "-v /tmp/maven:/home/jenkins/.m2 -e MAVEN_CONFIG=/home/jenkins/.m2"
+		}
+	}
+
 	parameters {
 		// These will show up in Jenkins: Build with parameters
 		// These are also available in groovy scripts
@@ -16,31 +21,21 @@ pipeline {
 		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choice you might want to make')
 		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
 	}
-	
-	tools {
-		maven 'maven'
-		//jdk
-	}
-	
-	
+			
 	stages {
-		stage ('Init') {
+		stage ("Init") {
 			steps {
-				echo 'Initing ...'
-				sh 'java -version'
-				sh 'mvn --version'
+				echo "Initing ..."
+				sh "ssh -V"
+				sh "java -version"
+				sh "mvn --version"
 				script {
 					gv = load "myscript.groovy"
 					gv.someFunc()
 				}
 			}
 		}
-		stage ('Checkout Code') {
-			steps {
-				echo "N/A Checking out ${REPO}"
-				//git "${REPO}"
-			}
-		}
+		
 		stage ('Build') {
 			when {
 				expression {
@@ -109,7 +104,8 @@ pipeline {
 	post {
 		// Execute after all stages executed
 		always {
-			echo 'Pipeline Build Status ...'
+			echo 'Clean WS'
+			cleanWs()
 			//mail to: "user@gmail.com", subject: "Jenkins Test build", body: "Test Build of Jenkins job: ${env.JOB_NAME}"
 		}
 		success {

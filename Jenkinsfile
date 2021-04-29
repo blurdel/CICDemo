@@ -4,9 +4,8 @@ pipeline {
 	agent any
 
 	environment {
-		// env vars
-		REPO = "https://github.com/blurdel/CICDemo.git"
 		NEW_VERSION = "1.2.0"
+		JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
 		//SERVER_CREDS = credentials('dso-creds')
 	}
 	parameters {
@@ -33,12 +32,6 @@ pipeline {
 					gv = load "myscript.groovy"
 					gv.someFunc()
 				}
-			}
-		}
-		stage ('Checkout Code') {
-			steps {
-				echo "N/A Checking out ${REPO}"
-				//git "${REPO}"
 			}
 		}
 		stage ('Build') {
@@ -109,7 +102,7 @@ pipeline {
 	post {
 		// Execute after all stages executed
 		always {
-			echo 'Pipeline Build Status ...'
+			echo 'ALWAYS'
 			//mail to: "user@gmail.com", subject: "Jenkins Test build", body: "Test Build of Jenkins job: ${env.JOB_NAME}"
 		}
 		success {

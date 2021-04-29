@@ -17,7 +17,7 @@ pipeline {
 	}
 	
 	tools {
-		maven 'Maven'
+		maven 'maven'
 		//jdk
 	}
 	

@@ -1,9 +1,14 @@
 # Run: docker build -t local_jenkins . -f Dockerfile-jenkins
 
+# FROM jenkins
 FROM maven:3.6.0-jdk-11
+
+USER root
 
 LABEL maintainer="user@gmail.com"
 
 RUN useradd -m -u 1000 -s /bin/bash jenkins
 
 RUN yum install -y openssh-clients
+
+USER jenkins

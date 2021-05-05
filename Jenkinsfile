@@ -5,7 +5,7 @@ pipeline {
 
 	environment {
 		NEW_VERSION = "1.2.0"
-		JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
+		//JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
 		//SERVER_CREDS = credentials('dso-creds')
 	}
 	parameters {

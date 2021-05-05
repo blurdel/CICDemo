@@ -10,7 +10,7 @@ pipeline {
 		docker {
 			image "maven:3.6.0-jdk-11"
 			// TODO: Need to manually create /tmp/maven (Docker will do it as root, BAD!)
-			args "-v /tmp/maven:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2"
+			args "-u root -v /tmp/maven:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2"
 		}
 	}
 
@@ -21,7 +21,7 @@ pipeline {
 		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choice you might want to make')
 		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
 	}
-			
+
 	stages {
 		stage ("Init") {
 			steps {
@@ -35,7 +35,7 @@ pipeline {
 				}
 			}
 		}
-		
+
 		stage ('Build') {
 			when {
 				expression {

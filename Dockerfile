@@ -1,4 +1,4 @@
-FROM jenkins:1.596
+FROM jenkins/jenkins:lts
 
 USER root
 
@@ -8,8 +8,12 @@ RUN apt-get update \
 
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 
+RUN groupadd -f docker
+RUN usermod -a -G docker jenkins
+
 USER jenkins
 
-# COPY plugins.txt /usr/share/jenkins/plugins.txt
 # RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
 
+COPY plugins.txt /usr/share/jenkins/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt

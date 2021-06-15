@@ -6,7 +6,6 @@ pipeline {
 	environment {
 		NEW_VERSION = "1.2.0"
 		//JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
-		//SERVER_CREDS = credentials('dso-creds')
 	}
 	parameters {
 		// These will show up in Jenkins: Build with parameters
@@ -66,27 +65,13 @@ pipeline {
 				echo 'Testing ...'
 				// 'make check' returns non-zero on test failures,
 				// using 'true' to allow the pipeline to continue nonetheless
-				sh 'mvn test || true'
-				junit(allowEmptyResults: true, testResults: '**/target/*.xml')
+				// sh 'mvn test || true'
+				junit(allowEmptyResults: false, testResults: '**/target/*.xml')
 			}
 		}
 		stage ('Deploy') {
 			steps {
 				echo 'Deploying ...'
-				/*
-				when {
-					expression {
-						currentBuild.result == null || currentBuild.result == 'SUCCESS'
-					}
-				}
-				// Plugins: credentials, credentials binding
-				withCredentials ([
-					usernamePassword(credentials: 'dso-creds', usernameVariable: USER, passwordVariable: PWD)
-				]) {
-					sh "myscript ${USER} ${PWD}"
-					echo "deploying version ${params.VERSION}"
-				}
-				*/
 			}
 		}
 		stage ('Cleanup') {

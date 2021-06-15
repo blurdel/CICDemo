@@ -1,4 +1,4 @@
-def gv
+def gv // For groovy scripts
 
 pipeline {
 	agent any
@@ -9,15 +9,16 @@ pipeline {
     }
 
 	environment {
-		SOME_VERSION = "1.2.0"
+		SOME_STATIC_VERSION = "0.0.1"
+		USER_CREDS = credentials('juser-creds')
 		//JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
 	}
 	parameters {
 		// These will show up in Jenkins: Build with parameters
 		// These are also available in groovy scripts
-		string(name: 'VERSION', defaultValue: '1.0.0', description: 'version to deploy to prod')
-		choice(name: 'STUFF', choices: ['a', 'b', 'c'], description: 'some choice you might want to make')
-		booleanParam(name: 'runTests', defaultValue: true, description: 'do you want to run tests?')
+		string(name: 'param1', defaultValue: '', description: 'Enter any value for param1')
+		choice(name: 'version', choices: ['1.1.0', '1.2.0', '1.3.0'], description: 'Select the version for this build')
+		booleanParam(name: 'unitTests', defaultValue: true, description: 'Do you want to run Unit Tests?')
 	}
 	
 	tools {
@@ -29,7 +30,8 @@ pipeline {
 	stages {
 		stage ('Init') {
 			steps {
-				echo 'Initing ...'
+				echo 'Stage: Init'
+				echo "branch=${env.BRANCH_NAME}, param1=${params.param1}, version=${params.version}, unitTests=${params.unitTests}"
 				sh 'java -version'
 				sh 'mvn --version'
 				script {
@@ -39,6 +41,7 @@ pipeline {
 			}
 		}
 		stage ('Timeout Test') {
+			echo 'Stage: Timeout Test'
 			options {
 				timeout(time: 5, unit: 'SECONDS')
 			}
@@ -50,15 +53,16 @@ pipeline {
 		stage ('Build') {
 			when {
 				expression {
-					BRANCH_NAME == 'master' // && CODE_CHANGES == true
+					env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main' // && CODE_CHANGES == true
 				}
 			}
 			options {
-				timeout(time: 2, unit: 'MINUTES')
+				timeout(time: 3, unit: 'MINUTES')
 			}
 			steps {
-				echo 'Building ...'
-				echo "Building with some version ${SOME_VERSION}"
+				echo 'Stage: Build'
+				echo "Using some static version ${SOME_STATIC_VERSION}"
+				echo "Using param1 = ${params.param1}"
 				//sh 'make'
 				//sh 'npm install'
 				sh 'mvn clean verify -DskipTests'
@@ -68,17 +72,16 @@ pipeline {
 		stage ('Test') {
 			when {
 				expression {
-					//BRANCH_NAME == 'dev' || BRANCH_NAME == 'master'
-					params.runTests == true
+					// env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'master' || || env.BRANCH_NAME == 'main'
+					params.unitTests == true
 				}
 			}
 			options {
-				timeout(time: 2, unit: 'MINUTES')
+				timeout(time: 4, unit: 'MINUTES')
 			}
 			steps {
-				echo 'Testing ...'
-				// 'make check' returns non-zero on test failures,
-				// using 'true' to allow the pipeline to continue nonetheless
+				echo 'Stage: Test'
+				// Using OR 'true' to allow the pipeline to continue on failure
 				// sh 'mvn test || true'
 				sh 'mvn test'
 				junit(allowEmptyResults: false, testResults: '**/target/surefire-reports/*.xml')
@@ -86,12 +89,13 @@ pipeline {
 		}
 		stage ('Deploy') {
 			steps {
-				echo 'Deploying ...'
+				echo 'Stage: Deploy'
+				echo "Deploying version: ${params.version}"
 			}
 		}
 		stage ('Cleanup') {
 			steps {
-				echo 'Cleaning up ...'
+				echo 'Stage: Cleanup'
 				script {
 					gv.otherFunc()
 				}
@@ -102,14 +106,14 @@ pipeline {
 	post {
 		// Execute after all stages executed
 		always {
-			echo 'ALWAYS'
+			echo 'post/always'
 			//mail to: "user@gmail.com", subject: "Jenkins Test build", body: "Test Build of Jenkins job: ${env.JOB_NAME}"
 		}
 		success {
-			echo 'SUCCESS'
+			echo 'post/success'
 		}
 		failure {
-			echo 'FAILURE'
+			echo 'post/failure'
 			script {
 				if (env.BRANCH_NAME == 'master') {
 					//mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br>URL: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: 'Jenkins', mimeType: 'text/html', replyTo: '', subject: "Build Failure: Project ${env.JOB_NAME}", to: "user@gmail.com";

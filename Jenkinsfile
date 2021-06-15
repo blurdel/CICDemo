@@ -40,10 +40,10 @@ pipeline {
 		}
 		stage ('Timeout Test') {
 			options {
-				timeout(time: 9, unit: 'SECONDS')
+				timeout(time: 5, unit: 'SECONDS')
 			}
 			steps {
-				sleep 20
+				sleep 3
 				echo 'Awake'
 			}
 		}

@@ -16,7 +16,7 @@ pipeline {
 	}
 	
 	tools {
-		maven 'maven'
+		maven 'mvn'
 		//jdk
 	}
 	
@@ -40,7 +40,7 @@ pipeline {
 				}
 			}
 			options {
-				timeout(time: 2, unit: "MINUTES")
+				timeout(time: 2, unit: 'MINUTES')
 			}
 			steps {
 				echo 'Building ...'
@@ -59,7 +59,7 @@ pipeline {
 				}
 			}
 			options {
-				timeout(time: 5, unit: "MINUTES")
+				timeout(time: 2, unit: 'MINUTES')
 			}
 			steps {
 				echo 'Testing ...'

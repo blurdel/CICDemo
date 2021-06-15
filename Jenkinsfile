@@ -66,7 +66,7 @@ pipeline {
 				// 'make check' returns non-zero on test failures,
 				// using 'true' to allow the pipeline to continue nonetheless
 				// sh 'mvn test || true'
-				junit(allowEmptyResults: false, testResults: '**/target/*.xml')
+				junit(allowEmptyResults: false, testResults: '**/target/surefire-reports/*.xml')
 			}
 		}
 		stage ('Deploy') {

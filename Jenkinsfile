@@ -32,6 +32,7 @@ pipeline {
 			steps {
 				echo 'Stage: Init'
 				echo "branch=${env.BRANCH_NAME}, param1=${params.param1}, version=${params.version}, unitTests=${params.unitTests}"
+				sh "ssh -V"
 				sh 'java -version'
 				sh 'mvn --version'
 				script {

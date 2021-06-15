@@ -2,9 +2,14 @@ def gv
 
 pipeline {
 	agent any
+	options {
+		timestamps() // Add timestamps to logging
+		// Abort this pipleine if it runs longer than the timeout
+        timeout(time: 2, unit: 'HOURS') 
+    }
 
 	environment {
-		NEW_VERSION = "1.2.0"
+		SOME_VERSION = "1.2.0"
 		//JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
 	}
 	parameters {
@@ -53,7 +58,7 @@ pipeline {
 			}
 			steps {
 				echo 'Building ...'
-				echo "Building version ${NEW_VERSION}"
+				echo "Building with some version ${SOME_VERSION}"
 				//sh 'make'
 				//sh 'npm install'
 				sh 'mvn clean verify -DskipTests'

@@ -33,6 +33,15 @@ pipeline {
 				}
 			}
 		}
+		stage ('Timeout Test') {
+			options {
+				timeout(time: 9, unit: 'SECONDS')
+			}
+			steps {
+				sleep 20
+				echo 'Awake'
+			}
+		}
 		stage ('Build') {
 			when {
 				expression {

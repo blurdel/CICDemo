@@ -41,11 +41,11 @@ pipeline {
 			}
 		}
 		stage ('Timeout Test') {
-			echo 'Stage: Timeout Test'
 			options {
 				timeout(time: 5, unit: 'SECONDS')
 			}
 			steps {
+				echo 'Stage: Timeout Test'
 				sleep 3
 				echo 'Awake'
 			}

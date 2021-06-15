@@ -41,9 +41,7 @@ pipeline {
 			}
 		}
 		stage ('Timeout Test') {
-			options {
-				timeout(time: 5, unit: 'SECONDS')
-			}
+			options { timeout(time: 5, unit: 'SECONDS') }
 			steps {
 				echo 'Stage: Timeout Test'
 				sleep 3
@@ -56,9 +54,7 @@ pipeline {
 					env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main' // && CODE_CHANGES == true
 				}
 			}
-			options {
-				timeout(time: 3, unit: 'MINUTES')
-			}
+			options { timeout(time: 3, unit: 'MINUTES') }
 			steps {
 				echo 'Stage: Build'
 				echo "Using some static version ${SOME_STATIC_VERSION}"
@@ -76,14 +72,12 @@ pipeline {
 					params.unitTests == true
 				}
 			}
-			options {
-				timeout(time: 4, unit: 'MINUTES')
-			}
+			options { timeout(time: 4, unit: 'MINUTES') }
 			steps {
 				echo 'Stage: Test'
-				// Using OR 'true' to allow the pipeline to continue on failure
-				// sh 'mvn test || true'
-				sh 'mvn test'
+				// Use OR 'true' to allow the pipeline to continue on failure
+				// sh 'mvn clean test || true'
+				sh 'mvn clean test'
 				junit(allowEmptyResults: false, testResults: '**/target/surefire-reports/*.xml')
 			}
 		}

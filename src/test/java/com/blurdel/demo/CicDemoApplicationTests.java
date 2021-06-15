@@ -15,7 +15,7 @@ class CicDemoApplicationTests {
 	@Test
 	void bad() {
 		int count = 0;
-		assert count == 1;
+		assert count == 0;
 	}
 	
 	@Test

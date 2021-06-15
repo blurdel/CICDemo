@@ -79,7 +79,7 @@ pipeline {
 				// Use OR 'true' to allow the pipeline to continue on failure
 				// sh 'mvn clean test || true'
 				sh 'mvn clean test'
-				junit(allowEmptyResults: false, testResults: '**/target/surefire-reports/*.xml')
+				junit(allowEmptyResults: false, testResults: '**/surefire-reports/*.xml')
 			}
 		}
 		stage ('Deploy') {

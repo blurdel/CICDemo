@@ -6,8 +6,6 @@
 # After running this script once, you can start/stop Jenkins using:
 #   docker <start/stop> jenkins
 #
-# For the server, I use port 8080, ie: localhost:8080
-#
 # TODO: First need to make the local volume (localVol) where Jenkins can persist data.
 #   sudo mkdir -p /opt/docker/jenkins/jenkins_home
 #   sudo chmod -R 777 /opt/docker/jenkins

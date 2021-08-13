@@ -10,7 +10,7 @@ USER root
 #RUN mkdir /var/cache/jenkins &&  chown -R jenkins:jenkins /var/cache/jenkins
 
 # For main web interface
-EXPOSE 8443
+EXPOSE 8080
 
 # For attached agents
 EXPOSE 50000

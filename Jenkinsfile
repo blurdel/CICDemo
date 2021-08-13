@@ -4,8 +4,7 @@ pipeline {
 	agent any
 	options {
 		timestamps() // Add timestamps to logging
-		// Abort this pipleine if it runs longer than the timeout
-        timeout(time: 2, unit: 'HOURS') 
+        timeout(time: 1, unit: 'HOURS') 
     }
 
 	environment {
@@ -23,7 +22,6 @@ pipeline {
 	
 	tools {
 		maven 'mvn'
-		//jdk
 	}
 	
 	
@@ -60,8 +58,6 @@ pipeline {
 				echo 'Stage: Build'
 				echo "Using some static version ${SOME_STATIC_VERSION}"
 				echo "Using param1 = ${params.param1}"
-				//sh 'make'
-				//sh 'npm install'
 				sh 'mvn clean verify -DskipTests'
 				archiveArtifacts(artifacts: '**/target/*.jar', fingerprint: true)
 			}
@@ -94,7 +90,6 @@ pipeline {
 				script {
 					gv.otherFunc()
 				}
-				deleteDir()
 			}
 		}
 	}
@@ -102,6 +97,7 @@ pipeline {
 		// Execute after all stages executed
 		always {
 			echo 'post/always'
+            deleteDir()
 			//mail to: "user@gmail.com", subject: "Jenkins Test build", body: "Test Build of Jenkins job: ${env.JOB_NAME}"
 		}
 		success {
